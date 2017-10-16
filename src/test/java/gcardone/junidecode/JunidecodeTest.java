@@ -63,8 +63,6 @@ public class JunidecodeTest {
     @Test
     public void someTests() {
         StringPair[] spvalues = new StringPair[]{
-            new StringPair("\u00C6neid", "AEneid"),
-            new StringPair("\u00e9tude", "etude"),
             // Chinese
             new StringPair("\u5317\u4eb0", "Bei Jing "),
             // Canadian syllabics
@@ -92,6 +90,23 @@ public class JunidecodeTest {
             String decoded = Junidecode.unidecode(sp.getLeft());
             assertEquals(sp.getRight(), decoded);
             sevenBitPurity(decoded);
+        }
+    }
+    
+    /**
+     * Testing a few Latin-1 Supplement letters, which must not be "junidecoded".
+     * However, it's no more 7 bit pure.
+     */
+    @Test
+    public void newTests() {
+        StringPair[] spvalues = new StringPair[]{
+            // Latin-1 Supplement letters: not decoded
+            new StringPair("\u00C6neid", "Æneid"),
+            new StringPair("\u00e9tude", "étude")
+        };
+        for (StringPair sp : spvalues) {
+            String decoded = Junidecode.unidecode(sp.getLeft());
+            assertEquals(sp.getRight(), decoded);
         }
     }
 
